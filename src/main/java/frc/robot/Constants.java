@@ -42,9 +42,10 @@ public final class Constants
     // Joystick Deadband
     public static final double TRANSLATION_DEADBAND  = 0.1;
     public static final double ROTATION_DEADBAND = 0.1;
-
-    public static final double ROTATION_CONSTANT = 1;
+    
     public static final double TRANSLATION_CONSTANT = 1;
+    public static final double ROTATION_CONSTANT = 1;
+    
 
     public static final int kOperatorControllerPort = 2;
     public static final int kDriverControllerPort = 0;

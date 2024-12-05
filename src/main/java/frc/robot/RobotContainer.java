@@ -33,7 +33,7 @@ public class RobotContainer {
   private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
       .withDeadband(DriveConstants.MAX_SPEED * DriveConstants.TRANSLATION_DEADBAND)
       .withRotationalDeadband(DriveConstants.MAX_ANGULAR_RATE * DriveConstants.ROTATION_DEADBAND) 
-      .withDriveRequestType(DriveRequestType.OpenLoopVoltage); 
+      .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
                                                                
   private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
   private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
@@ -45,9 +45,9 @@ public class RobotContainer {
     
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
         drivetrain.applyRequest(() -> 
-            drive.withVelocityX(m_driverController.getLeftY() * DriveConstants.MAX_SPEED)
-            .withVelocityY(m_driverController.getLeftX() * DriveConstants.MAX_SPEED) 
-            .withRotationalRate(-m_driverController.getRightX() * DriveConstants.MAX_ANGULAR_RATE) 
+            drive.withVelocityX((m_driverController.getLeftY() * DriveConstants.MAX_SPEED) * DriveConstants.TRANSLATION_CONSTANT)
+            .withVelocityY((m_driverController.getLeftX() * DriveConstants.MAX_SPEED) * DriveConstants.TRANSLATION_CONSTANT) 
+            .withRotationalRate((-m_driverController.getRightX() * DriveConstants.MAX_ANGULAR_RATE) /* DriveConstants.ROTATION_CONSTANT*/) 
             ));
 
       m_driverController.x().whileTrue(drivetrain.applyRequest(() -> brake));
