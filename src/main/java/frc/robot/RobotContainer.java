@@ -55,10 +55,14 @@ public class RobotContainer {
     
     newSpeed();
 
-    Trigger speedPick = new Trigger(() -> lastSpeed != speedChooser.getSelected());
-    speedPick.onTrue(Commands.runOnce(() -> newSpeed()));
+    // Trigger speedPick = new Trigger(() -> lastSpeed != speedChooser.getSelected());
+    // speedPick.onTrue(Commands.runOnce(() -> newSpeed()));
+    // m_driverController.rightTrigger()
+    m_driverController.leftBumper().onTrue(Commands.runOnce(() ->
+     DriveConstants.MAX_SPEED = TunerConstants.kSpeedAt12VoltsMps * DriveConstants.CREEP_SPEED));
     
-    m_driverController.leftBumper().onFalse(Commands.runOnce(() -> DriveConstants.MAX_SPEED = TunerConstants.kSpeedAt12VoltsMps * speedChooser.getSelected()));
+    m_driverController.leftBumper().onFalse(Commands.runOnce(() ->
+     DriveConstants.MAX_SPEED = TunerConstants.kSpeedAt12VoltsMps * speedChooser.getSelected()));
 
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
         drivetrain.applyRequest(() -> 
@@ -91,7 +95,7 @@ public class RobotContainer {
     speedChooser.addOption("90%", 0.9);
     speedChooser.addOption("85%", 0.85);
     speedChooser.addOption("80%", 0.8);
-    speedChooser.addOption("75%", 0.75);
+    speedChooser.setDefaultOption("75%", 0.75);
     speedChooser.addOption("70%", 0.7);
     speedChooser.addOption("65%", 0.65);
     speedChooser.addOption("60%", 0.6);
@@ -102,7 +106,7 @@ public class RobotContainer {
     speedChooser.addOption("35%", 0.35);
     speedChooser.addOption("30%", 0.3);
     speedChooser.addOption("25%", 0.25);
-    speedChooser.setDefaultOption("0%", 0.0);
+    speedChooser.addOption("0%", 0.0);
     // Put chooser on dashboard
     SmartDashboard.putData("Speed Limit", speedChooser);
 

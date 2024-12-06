@@ -9,6 +9,13 @@
       "/SmartDashboard/Module 2": "Mechanism2d",
       "/SmartDashboard/Module 3": "Mechanism2d",
       "/SmartDashboard/Speed Limit": "String Chooser"
+    },
+    "windows": {
+      "/SmartDashboard/Speed Limit": {
+        "window": {
+          "visible": true
+        }
+      }
     }
   },
   "NetworkTables Info": {

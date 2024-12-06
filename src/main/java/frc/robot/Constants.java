@@ -37,6 +37,9 @@ public final class Constants
     public static double MAX_SPEED = TunerConstants.kSpeedAt12VoltsMps;
     public static final double MAX_ANGULAR_RATE = 1.5 * Math.PI;
 
+    public static double CREEP_SPEED = 0.5;
+    public static double CREEP_ANGULAR_RATE = 0.5 * Math.PI;
+
     
     
     // Joystick Deadband
