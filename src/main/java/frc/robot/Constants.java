@@ -34,7 +34,7 @@ public final class Constants
 
   public static class DriveConstants
   {
-    public static final double MAX_SPEED = TunerConstants.kSpeedAt12VoltsMps;
+    public static double MAX_SPEED = TunerConstants.kSpeedAt12VoltsMps;
     public static final double MAX_ANGULAR_RATE = 1.5 * Math.PI;
 
     
