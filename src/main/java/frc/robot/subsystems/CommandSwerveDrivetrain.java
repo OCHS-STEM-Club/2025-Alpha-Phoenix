@@ -85,35 +85,37 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     }
 
     // Path Planner Setup
-    private void configurePathPlanner() {
+    public void configurePathPlanner() {
         double driveBaseRadius = 0;
         for (var moduleLocation : m_moduleLocations) {
             driveBaseRadius = Math.max(driveBaseRadius, moduleLocation.getNorm());
         }
 
         AutoBuilder.configureHolonomic(
-            ()->this.getState().Pose, // Supplier of current robot pose
-            this::seedFieldRelative,  // Consumer for seeding pose against auto
+            ()->this.getState().Pose,
+            this::seedFieldRelative,
             this::getCurrentRobotChassisSpeeds,
-            (speeds)->this.setControl(autoRequest.withSpeeds(speeds)), // Consumer of ChassisSpeeds to drive the robot
-            new HolonomicPathFollowerConfig(new PIDConstants(10, 0, 0),
-                                            new PIDConstants(10, 0, 0),
-                                            TunerConstants.kSpeedAt12VoltsMps,
-                                            driveBaseRadius,
-                                            new ReplanningConfig()),
-            () -> {
+            (speeds)->this.setControl(autoRequest.withSpeeds(speeds)),// Consumer of ChassisSpeeds to drive the robot
+            new HolonomicPathFollowerConfig(
+                new PIDConstants(5.0, 0, 0), 
+                new PIDConstants(5.0, 0, 0), 
+                TunerConstants.kSpeedAt12VoltsMps, // Meters  
+                driveBaseRadius, 
+                new ReplanningConfig()),
+                () -> {
                     // Boolean supplier that controls when the path will be mirrored for the red alliance
-                    // This will flip the path being followed to the red side of the field during auto only.
+                    // This will flip the path being followed to the red side of the field.
                     // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
                     var alliance = DriverStation.getAlliance();
                     if (alliance.isPresent()) {
-                        return alliance.get() == DriverStation.Alliance.Red & !DriverStation.isTeleop();
+                        return alliance.get() == DriverStation.Alliance.Red;
                     }
                     return false;
-            },
-            this); // Subsystem for requirements
+                },
+                this);
     }
+
 
     // Getting Chasis Speeds
     public ChassisSpeeds getCurrentRobotChassisSpeeds() {
@@ -137,7 +139,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
             });
         }
 
-        System.out.println(DriveConstants.MAX_SPEED);
+        // System.out.println(DriveConstants.MAX_SPEED);
     }
     
     

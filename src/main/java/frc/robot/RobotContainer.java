@@ -35,9 +35,9 @@ public class RobotContainer {
   private final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain;
 
   // Slew rate limiters
-  private final SlewRateLimiter xLimiter = new SlewRateLimiter(2);
-  private final SlewRateLimiter yLimiter = new SlewRateLimiter(0.5);
-  private final SlewRateLimiter rotLimiter = new SlewRateLimiter(0.5);
+  private final SlewRateLimiter xSlewLimiter = new SlewRateLimiter(DriveConstants.X_SLEW_RATE_LIMITER);
+  private final SlewRateLimiter ySlewLimiter = new SlewRateLimiter(DriveConstants.Y_SLEW_RATE_LIMITER);
+  private final SlewRateLimiter rotSlewLimiter = new SlewRateLimiter(DriveConstants.ROT_SLEW_RATE_LIMITER);
 
   private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
       .withDeadband(DriveConstants.MAX_SPEED * DriveConstants.TRANSLATION_DEADBAND)
@@ -49,7 +49,7 @@ public class RobotContainer {
 
   private final Telemetry logger = new Telemetry(DriveConstants.MAX_SPEED);
 
-  public Double lastSpeed = 0.0;
+  
 
   private void configureBindings() {
     
@@ -63,9 +63,9 @@ public class RobotContainer {
 
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
         drivetrain.applyRequest(() -> 
-            drive.withVelocityX(yLimiter.calculate(m_driverController.getLeftY() * DriveConstants.MAX_SPEED))
-            .withVelocityY(xLimiter.calculate(m_driverController.getLeftX() * DriveConstants.MAX_SPEED)) 
-            .withRotationalRate(rotLimiter.calculate(-m_driverController.getRightX() * DriveConstants.MAX_ANGULAR_RATE)) 
+            drive.withVelocityX(xSlewLimiter.calculate(m_driverController.getLeftY() * DriveConstants.MAX_SPEED))
+            .withVelocityY(ySlewLimiter.calculate(m_driverController.getLeftX() * DriveConstants.MAX_SPEED)) 
+            .withRotationalRate(rotSlewLimiter.calculate(-m_driverController.getRightX() * DriveConstants.MAX_ANGULAR_RATE)) 
             ));
 
       m_driverController.x().whileTrue(drivetrain.applyRequest(() -> brake));
@@ -84,8 +84,9 @@ public class RobotContainer {
   }
 
   public RobotContainer() {
+
     autoChooser = AutoBuilder.buildAutoChooser();
-    // newSpeed();
+
     // Adjustable speed Chooser
     speedChooser.addOption("100%", 1.0);
     speedChooser.addOption("95%", 0.95);
@@ -104,6 +105,7 @@ public class RobotContainer {
     speedChooser.addOption("30%", 0.3);
     speedChooser.addOption("25%", 0.25);
     speedChooser.addOption("0%", 0.0);
+
     // Put chooser on dashboard
     SmartDashboard.putData("Speed Limit", speedChooser);
 
@@ -113,8 +115,8 @@ public class RobotContainer {
   }
 
   private void newSpeed() {
-    lastSpeed = speedChooser.getSelected();
-    DriveConstants.MAX_SPEED = TunerConstants.kSpeedAt12VoltsMps * lastSpeed;
+    DriveConstants.LAST_SPEED = speedChooser.getSelected();
+    DriveConstants.MAX_SPEED = TunerConstants.kSpeedAt12VoltsMps * DriveConstants.LAST_SPEED;
   }
 
   public Command getAutonomousCommand() {

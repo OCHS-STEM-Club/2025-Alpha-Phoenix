@@ -39,6 +39,7 @@ public final class Constants
     // CREEP Speeds
     public static double CREEP_SPEED = 0.5;
     public static double CREEP_ANGULAR_RATE = 0.5 * Math.PI;
+    public static Double LAST_SPEED = 0.0;
 
     // Xbox Deadband
     public static final double TRANSLATION_DEADBAND  = 0.1;
@@ -51,6 +52,12 @@ public final class Constants
     // Driver Controller Port
     public static final int kOperatorControllerPort = 2;
     public static final int kDriverControllerPort = 0;
+
+    // Slew rate limiter
+    public static final double X_SLEW_RATE_LIMITER = 10;
+    public static final double Y_SLEW_RATE_LIMITER = 10;
+    public static final double ROT_SLEW_RATE_LIMITER = 0.5;
+
   }
 
  
