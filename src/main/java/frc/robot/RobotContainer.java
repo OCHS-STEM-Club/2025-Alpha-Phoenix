@@ -55,9 +55,6 @@ public class RobotContainer {
     
     newSpeed();
 
-    // Trigger speedPick = new Trigger(() -> lastSpeed != speedChooser.getSelected());
-    // speedPick.onTrue(Commands.runOnce(() -> newSpeed()));
-    // m_driverController.rightTrigger()
     m_driverController.leftBumper().onTrue(Commands.runOnce(() ->
      DriveConstants.MAX_SPEED = TunerConstants.kSpeedAt12VoltsMps * DriveConstants.CREEP_SPEED));
     

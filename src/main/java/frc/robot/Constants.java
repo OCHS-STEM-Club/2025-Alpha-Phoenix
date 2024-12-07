@@ -21,8 +21,6 @@ import frc.robot.generated.TunerConstants;
 public final class Constants
 {
 
-  public static final double ROBOT_MASS = (148 - 20.3) * 0.453592; // 32lbs * kg per pound
-  public static final double LOOP_TIME  = 0.05; //s, 20ms + 110ms sprk max velocity lag
 
   public static final class AutonConstants
   {
@@ -34,26 +32,25 @@ public final class Constants
 
   public static class DriveConstants
   {
+    // MAX Speeds
     public static double MAX_SPEED = TunerConstants.kSpeedAt12VoltsMps;
     public static final double MAX_ANGULAR_RATE = 1.5 * Math.PI;
 
+    // CREEP Speeds
     public static double CREEP_SPEED = 0.5;
     public static double CREEP_ANGULAR_RATE = 0.5 * Math.PI;
 
-    
-    
-    // Joystick Deadband
+    // Xbox Deadband
     public static final double TRANSLATION_DEADBAND  = 0.1;
     public static final double ROTATION_DEADBAND = 0.1;
     
+    // Xbox speed constants
     public static final double TRANSLATION_CONSTANT = 1;
     public static final double ROTATION_CONSTANT = 1;
     
-
+    // Driver Controller Port
     public static final int kOperatorControllerPort = 2;
     public static final int kDriverControllerPort = 0;
-
-    public static final boolean isButtonBoxBeingUsed = true;
   }
 
  
