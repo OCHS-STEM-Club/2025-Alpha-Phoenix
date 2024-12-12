@@ -61,12 +61,19 @@ public class RobotContainer {
     m_driverController.leftBumper().onFalse(Commands.runOnce(() ->
      DriveConstants.MAX_SPEED = TunerConstants.kSpeedAt12VoltsMps * speedChooser.getSelected()));
 
-    drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
-        drivetrain.applyRequest(() -> 
-            drive.withVelocityX(xSlewLimiter.calculate(m_driverController.getLeftY() * DriveConstants.MAX_SPEED))
-            .withVelocityY(ySlewLimiter.calculate(m_driverController.getLeftX() * DriveConstants.MAX_SPEED)) 
-            .withRotationalRate(rotSlewLimiter.calculate(-m_driverController.getRightX() * DriveConstants.MAX_ANGULAR_RATE)) 
-            ));
+    // drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
+    //     drivetrain.applyRequest(() -> 
+    //         drive.withVelocityX(xSlewLimiter.calculate(m_driverController.getLeftY() * DriveConstants.MAX_SPEED))
+    //         .withVelocityY(ySlewLimiter.calculate(m_driverController.getLeftX() * DriveConstants.MAX_SPEED)) 
+    //         .withRotationalRate(rotSlewLimiter.calculate(-m_driverController.getRightX() * DriveConstants.MAX_ANGULAR_RATE)) 
+    //         ));
+
+            drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
+            drivetrain.applyRequest(() -> 
+                drive.withVelocityX((m_driverController.getLeftY() * DriveConstants.MAX_SPEED))
+                .withVelocityY((m_driverController.getLeftX() * DriveConstants.MAX_SPEED)) 
+                .withRotationalRate((-m_driverController.getRightX() * DriveConstants.MAX_ANGULAR_RATE)) 
+                ));
 
       m_driverController.x().whileTrue(drivetrain.applyRequest(() -> brake));
     

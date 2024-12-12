@@ -34,7 +34,7 @@ public final class Constants
   {
     // MAX Speeds
     public static double MAX_SPEED = TunerConstants.kSpeedAt12VoltsMps;
-    public static final double MAX_ANGULAR_RATE = 1.5 * Math.PI;
+    public static final double MAX_ANGULAR_RATE = 2 * Math.PI;
 
     // CREEP Speeds
     public static double CREEP_SPEED = 0.5;
@@ -56,7 +56,7 @@ public final class Constants
     // Slew rate limiter
     public static final double X_SLEW_RATE_LIMITER = 10;
     public static final double Y_SLEW_RATE_LIMITER = 10;
-    public static final double ROT_SLEW_RATE_LIMITER = 0.5;
+    public static final double ROT_SLEW_RATE_LIMITER = 10;
 
   }
 
