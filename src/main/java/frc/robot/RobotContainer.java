@@ -130,8 +130,19 @@ public class RobotContainer {
 
   public RobotContainer() {
     // Orchestra configs
+    m_orchestra.addInstrument(drivetrain.getModule(0).getDriveMotor());
+    m_orchestra.addInstrument(drivetrain.getModule(0).getSteerMotor());
+
     m_orchestra.addInstrument(drivetrain.getModule(1).getDriveMotor());
-    m_orchestra.loadMusic("output.chrp");
+    m_orchestra.addInstrument(drivetrain.getModule(1).getSteerMotor());
+
+    m_orchestra.addInstrument(drivetrain.getModule(2).getDriveMotor());
+    m_orchestra.addInstrument(drivetrain.getModule(2).getSteerMotor());
+
+    m_orchestra.addInstrument(drivetrain.getModule(3).getDriveMotor());
+    m_orchestra.addInstrument(drivetrain.getModule(3).getSteerMotor());
+
+    m_orchestra.loadMusic("ACDC.chrp");
     m_audioConfigs.AllowMusicDurDisable = true;
     
 
