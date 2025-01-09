@@ -20,8 +20,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.commands.coralIntakeInCmd;
-import frc.robot.commands.coralIntakeOutCmd;
+import frc.robot.commands.Coral_Intake.Coral_Intake_Cmd;
+import frc.robot.commands.Coral_Intake.Coral_Outake_Cmd;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.CoralIntakeSubsystem;
@@ -39,8 +39,8 @@ public class RobotContainer {
 
   private final CoralIntakeSubsystem m_coralIntakeSubsystem = new CoralIntakeSubsystem();
 
-  coralIntakeInCmd m_coralIntake = new coralIntakeInCmd(m_coralIntakeSubsystem);
-  coralIntakeOutCmd m_coralOutake = new coralIntakeOutCmd(m_coralIntakeSubsystem);
+  Coral_Intake_Cmd m_coralIntakeCmd = new Coral_Intake_Cmd(m_coralIntakeSubsystem);
+  Coral_Outake_Cmd m_coralOutakeCmd = new Coral_Outake_Cmd(m_coralIntakeSubsystem);
   // Slew rate limiters
   private final SlewRateLimiter xSlewLimiter = new SlewRateLimiter(DriveConstants.X_SLEW_RATE_LIMITER);
   private final SlewRateLimiter ySlewLimiter = new SlewRateLimiter(DriveConstants.Y_SLEW_RATE_LIMITER);
@@ -60,11 +60,14 @@ public class RobotContainer {
 
   private void configureBindings() {
     
+    // New speed method called for adjustable speed chooser
     newSpeed();
 
+    // Creep button
     m_driverController.leftBumper().onTrue(Commands.runOnce(() ->
      DriveConstants.MAX_SPEED = TunerConstants.kSpeedAt12VoltsMps * DriveConstants.CREEP_SPEED));
     
+    //  Refresh button for speed chooser
     m_driverController.leftBumper().onFalse(Commands.runOnce(() ->
      DriveConstants.MAX_SPEED = TunerConstants.kSpeedAt12VoltsMps * speedChooser.getSelected()));
 
@@ -75,38 +78,45 @@ public class RobotContainer {
     //         .withRotationalRate(rotSlewLimiter.calculate(-m_driverController.getRightX() * DriveConstants.MAX_ANGULAR_RATE)) 
     //         ));
 
-            drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
+      // Binding drive to controls
+      drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() -> 
                 drive.withVelocityX((m_driverController.getLeftY() * DriveConstants.MAX_SPEED))
                 .withVelocityY((m_driverController.getLeftX() * DriveConstants.MAX_SPEED)) 
                 .withRotationalRate((-m_driverController.getRightX() * DriveConstants.MAX_ANGULAR_RATE)) 
                 ));
 
+      // Brake more or X wheels
       m_driverController.x().whileTrue(drivetrain.applyRequest(() -> brake));
-    
+  
+      // Points wheel in direction of joystick
       m_driverController.b().whileTrue(drivetrain
           .applyRequest(() -> point.withModuleDirection(
           new Rotation2d(-m_driverController.getLeftY(), -m_driverController.getLeftX()))));
 
-    // reset the field-centric heading on left bumper press
+      // Gyro reset
       m_driverController.a().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
 
+      // Simulation things
       if (Utils.isSimulation()) {
       drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
       }
       drivetrain.registerTelemetry(logger::telemeterize);
 
+      // Intake CMD
       m_driverController.leftTrigger().whileTrue(
-        m_coralIntake
+        m_coralIntakeCmd
         );
 
+      // Outake CMD
       m_driverController.rightTrigger().whileTrue(
-        m_coralOutake
+        m_coralOutakeCmd
         );
   }
 
   public RobotContainer() {
 
+    // Build Auto chooser
     autoChooser = AutoBuilder.buildAutoChooser();
 
     // Adjustable speed Chooser
@@ -131,11 +141,14 @@ public class RobotContainer {
     // Put chooser on dashboard
     SmartDashboard.putData("Speed Limit", speedChooser);
 
+    // Configures all bindings
     configureBindings();
 
+    // Puts auto chooser on dashboard
     SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 
+  // Method to refresh speed chooser
   private void newSpeed() {
     DriveConstants.LAST_SPEED = speedChooser.getSelected();
     DriveConstants.MAX_SPEED = TunerConstants.kSpeedAt12VoltsMps * DriveConstants.LAST_SPEED;

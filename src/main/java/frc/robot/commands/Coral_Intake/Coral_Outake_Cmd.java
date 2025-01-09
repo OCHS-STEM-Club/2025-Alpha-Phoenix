@@ -2,16 +2,16 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.Coral_Intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.CoralIntakeSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class coralIntakeInCmd extends Command {
+public class Coral_Outake_Cmd extends Command {
   /** Creates a new coralIntakeInCmd. */
   CoralIntakeSubsystem m_coralIntakeSubsystem;
-  public coralIntakeInCmd(CoralIntakeSubsystem coralIntakeSubsystem) {
+  public Coral_Outake_Cmd(CoralIntakeSubsystem coralIntakeSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_coralIntakeSubsystem = coralIntakeSubsystem;
 
@@ -24,8 +24,8 @@ public class coralIntakeInCmd extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_coralIntakeSubsystem.intakeIn();
-    System.out.println("yes it in");
+    m_coralIntakeSubsystem.intakeOut();
+    System.out.println("yes it out");
   }
 
   // Called once the command ends or is interrupted.

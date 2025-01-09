@@ -60,6 +60,15 @@ public final class Constants
 
   }
 
+  public static class CoralIntakeConstants {
+
+    public static final int kCoralIntakeID = 18;
+    public static final double kCoralIntakeSpeed = 0.2;
+    public static final double kCoralIntakeOff = 0;
+
+
+  }
+
  
   
 }

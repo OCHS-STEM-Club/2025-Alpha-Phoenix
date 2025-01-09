@@ -10,12 +10,13 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class CoralIntakeSubsystem extends SubsystemBase {
   /** Creates a new coralIntakeSubsystem. */
   private CANSparkMax coralIntake;
   public CoralIntakeSubsystem() {
-    coralIntake = new CANSparkMax(18, MotorType.kBrushless);
+    coralIntake = new CANSparkMax(Constants.CoralIntakeConstants.kCoralIntakeID, MotorType.kBrushless);
     coralIntake.setIdleMode(IdleMode.kBrake);
   }
 
@@ -27,12 +28,12 @@ public class CoralIntakeSubsystem extends SubsystemBase {
   }
   
   public void intakeIn() {
-    coralIntake.set(0.2);
+    coralIntake.set(Constants.CoralIntakeConstants.kCoralIntakeSpeed);
   }
   public void intakeOff() {
-    coralIntake.set(0);
+    coralIntake.set(Constants.CoralIntakeConstants.kCoralIntakeOff);
   }
   public void intakeOut() {
-    coralIntake.set(-0.2);
+    coralIntake.set(-Constants.CoralIntakeConstants.kCoralIntakeSpeed);
   }
 }
