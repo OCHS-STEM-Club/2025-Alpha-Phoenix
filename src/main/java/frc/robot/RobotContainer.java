@@ -9,7 +9,6 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 
-import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -18,7 +17,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.Coral_Intake.Coral_Intake_Cmd;
 import frc.robot.commands.Coral_Intake.Coral_Outake_Cmd;
@@ -28,32 +26,35 @@ import frc.robot.subsystems.CoralIntakeSubsystem;
 
 public class RobotContainer {
 
+  // Chooser definitions
   private final SendableChooser<Command> autoChooser;
-  
   private SendableChooser<Double> speedChooser = new SendableChooser<>();
 
-  /* Setting up bindings for necessary control of the swerve drive platform */
+  // Controller definitions
   private final CommandXboxController m_driverController = new CommandXboxController(DriveConstants.kDriverControllerPort); 
 
+  // Subsystem definitions
   private final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain;
-
   private final CoralIntakeSubsystem m_coralIntakeSubsystem = new CoralIntakeSubsystem();
 
+  // Commands definitions
   Coral_Intake_Cmd m_coralIntakeCmd = new Coral_Intake_Cmd(m_coralIntakeSubsystem);
   Coral_Outake_Cmd m_coralOutakeCmd = new Coral_Outake_Cmd(m_coralIntakeSubsystem);
-  // Slew rate limiters
-  private final SlewRateLimiter xSlewLimiter = new SlewRateLimiter(DriveConstants.X_SLEW_RATE_LIMITER);
-  private final SlewRateLimiter ySlewLimiter = new SlewRateLimiter(DriveConstants.Y_SLEW_RATE_LIMITER);
-  private final SlewRateLimiter rotSlewLimiter = new SlewRateLimiter(DriveConstants.ROT_SLEW_RATE_LIMITER);
 
+  //  // Slew rate limiters
+  // private final SlewRateLimiter xSlewLimiter = new SlewRateLimiter(DriveConstants.X_SLEW_RATE_LIMITER);
+  // private final SlewRateLimiter ySlewLimiter = new SlewRateLimiter(DriveConstants.Y_SLEW_RATE_LIMITER);
+  // private final SlewRateLimiter rotSlewLimiter = new SlewRateLimiter(DriveConstants.ROT_SLEW_RATE_LIMITER);
+
+  // Drive requests
   private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
       .withDeadband(DriveConstants.MAX_SPEED * DriveConstants.TRANSLATION_DEADBAND)
       .withRotationalDeadband(DriveConstants.MAX_ANGULAR_RATE * DriveConstants.ROTATION_DEADBAND) 
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
-                                                               
   private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
   private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
 
+  // Telemetry
   private final Telemetry logger = new Telemetry(DriveConstants.MAX_SPEED);
 
   
@@ -71,15 +72,17 @@ public class RobotContainer {
     m_driverController.leftBumper().onFalse(Commands.runOnce(() ->
      DriveConstants.MAX_SPEED = TunerConstants.kSpeedAt12VoltsMps * speedChooser.getSelected()));
 
-    // drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
+
+    // Drive binding with slew rate limiters
+    // drivetrain.setDefaultCommand( 
     //     drivetrain.applyRequest(() -> 
     //         drive.withVelocityX(xSlewLimiter.calculate(m_driverController.getLeftY() * DriveConstants.MAX_SPEED))
-    //         .withVelocityY(ySlewLimiter.calculate(m_driverController.getLeftX() * DriveConstants.MAX_SPEED)) 
-    //         .withRotationalRate(rotSlewLimiter.calculate(-m_driverController.getRightX() * DriveConstants.MAX_ANGULAR_RATE)) 
-    //         ));
+    //          .withVelocityY(ySlewLimiter.calculate(m_driverController.getLeftX() * DriveConstants.MAX_SPEED)) 
+    //          .withRotationalRate(rotSlewLimiter.calculate(-m_driverController.getRightX() * DriveConstants.MAX_ANGULAR_RATE)) 
+    //         )); 
 
       // Binding drive to controls
-      drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
+      drivetrain.setDefaultCommand( 
             drivetrain.applyRequest(() -> 
                 drive.withVelocityX((m_driverController.getLeftY() * DriveConstants.MAX_SPEED))
                 .withVelocityY((m_driverController.getLeftX() * DriveConstants.MAX_SPEED)) 
@@ -154,6 +157,7 @@ public class RobotContainer {
     DriveConstants.MAX_SPEED = TunerConstants.kSpeedAt12VoltsMps * DriveConstants.LAST_SPEED;
   }
 
+  // Method to return input from auto chooser
   public Command getAutonomousCommand() {
     return autoChooser.getSelected();
   }

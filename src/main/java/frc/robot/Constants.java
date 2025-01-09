@@ -6,8 +6,6 @@ package frc.robot;
 
 import com.pathplanner.lib.util.PIDConstants;
 
-import edu.wpi.first.math.geometry.Translation3d;
-import edu.wpi.first.math.util.Units;
 import frc.robot.generated.TunerConstants;
 
 /**
@@ -24,7 +22,7 @@ public final class Constants
 
   public static final class AutonConstants
   {
-
+    // Auto PID loops
     public static final PIDConstants TRANSLATION_PID = new PIDConstants(0.7, 0, 0);
     public static final PIDConstants ANGLE_PID   = new PIDConstants(1, 0, 0.01);
   }
@@ -62,7 +60,10 @@ public final class Constants
 
   public static class CoralIntakeConstants {
 
+    // Intake IDs
     public static final int kCoralIntakeID = 18;
+
+    // Intake Speeds
     public static final double kCoralIntakeSpeed = 0.2;
     public static final double kCoralIntakeOff = 0;
 
