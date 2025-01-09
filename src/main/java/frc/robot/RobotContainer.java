@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.Orchestra;
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -25,6 +26,9 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.CoralIntakeSubsystem;
 
 public class RobotContainer {
+
+  // Orchestra Definition
+  Orchestra m_orchestra = new Orchestra();
 
   // Chooser definitions
   private final SendableChooser<Command> autoChooser;
@@ -116,12 +120,16 @@ public class RobotContainer {
         m_coralOutakeCmd
         );
 
+      // Orchestra play bind
       m_driverController.rightBumper().onTrue(
-        Commands.runOnce(drivetrain :: playMusic)
+        Commands.runOnce(this :: playMusic)
       );
   }
 
   public RobotContainer() {
+    // Orchestra configs
+    m_orchestra.addInstrument(drivetrain.getModule(1).getDriveMotor());
+    m_orchestra.loadMusic("output.chrp");
 
     // Build Auto chooser
     autoChooser = AutoBuilder.buildAutoChooser();
@@ -161,8 +169,15 @@ public class RobotContainer {
     DriveConstants.MAX_SPEED = TunerConstants.kSpeedAt12VoltsMps * DriveConstants.LAST_SPEED;
   }
 
+  // Orchestra play method
+  public void playMusic(){
+    m_orchestra.play();
+  }
+
   // Method to return input from auto chooser
   public Command getAutonomousCommand() {
     return autoChooser.getSelected();
   }
+
+
 }
