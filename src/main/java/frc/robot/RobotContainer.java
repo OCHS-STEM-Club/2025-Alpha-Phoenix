@@ -6,6 +6,7 @@ package frc.robot;
 
 import com.ctre.phoenix6.Orchestra;
 import com.ctre.phoenix6.Utils;
+import com.ctre.phoenix6.configs.AudioConfigs;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
@@ -29,6 +30,7 @@ public class RobotContainer {
 
   // Orchestra Definition
   Orchestra m_orchestra = new Orchestra();
+  AudioConfigs m_audioConfigs = new AudioConfigs();
 
   // Chooser definitions
   private final SendableChooser<Command> autoChooser;
@@ -130,6 +132,8 @@ public class RobotContainer {
     // Orchestra configs
     m_orchestra.addInstrument(drivetrain.getModule(1).getDriveMotor());
     m_orchestra.loadMusic("output.chrp");
+    m_audioConfigs.AllowMusicDurDisable = true;
+    
 
     // Build Auto chooser
     autoChooser = AutoBuilder.buildAutoChooser();
