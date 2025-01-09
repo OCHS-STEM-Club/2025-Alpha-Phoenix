@@ -20,8 +20,11 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.commands.coralIntakeInCmd;
+import frc.robot.commands.coralIntakeOutCmd;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.CoralIntakeSubsystem;
 
 public class RobotContainer {
 
@@ -34,6 +37,10 @@ public class RobotContainer {
 
   private final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain;
 
+  private final CoralIntakeSubsystem m_coralIntakeSubsystem = new CoralIntakeSubsystem();
+
+  coralIntakeInCmd m_coralIntake = new coralIntakeInCmd(m_coralIntakeSubsystem);
+  coralIntakeOutCmd m_coralOutake = new coralIntakeOutCmd(m_coralIntakeSubsystem);
   // Slew rate limiters
   private final SlewRateLimiter xSlewLimiter = new SlewRateLimiter(DriveConstants.X_SLEW_RATE_LIMITER);
   private final SlewRateLimiter ySlewLimiter = new SlewRateLimiter(DriveConstants.Y_SLEW_RATE_LIMITER);
@@ -88,6 +95,14 @@ public class RobotContainer {
       drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
       }
       drivetrain.registerTelemetry(logger::telemeterize);
+
+      m_driverController.leftTrigger().whileTrue(
+        m_coralIntake
+        );
+
+      m_driverController.rightTrigger().whileTrue(
+        m_coralOutake
+        );
   }
 
   public RobotContainer() {
@@ -100,12 +115,12 @@ public class RobotContainer {
     speedChooser.addOption("90%", 0.9);
     speedChooser.addOption("85%", 0.85);
     speedChooser.addOption("80%", 0.8);
-    speedChooser.setDefaultOption("75%", 0.75);
+    speedChooser.addOption("75%", 0.75);
     speedChooser.addOption("70%", 0.7);
     speedChooser.addOption("65%", 0.65);
     speedChooser.addOption("60%", 0.6);
     speedChooser.addOption("55%", 0.55);
-    speedChooser.addOption("50%", 0.5);
+    speedChooser.setDefaultOption("50%", 0.5);
     speedChooser.addOption("45%", 0.45);
     speedChooser.addOption("40%", 0.4);
     speedChooser.addOption("35%", 0.35);
