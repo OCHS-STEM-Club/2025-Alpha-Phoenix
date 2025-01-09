@@ -115,6 +115,10 @@ public class RobotContainer {
       m_driverController.rightTrigger().whileTrue(
         m_coralOutakeCmd
         );
+
+      m_driverController.rightBumper().onTrue(
+        Commands.runOnce(drivetrain :: playMusic)
+      );
   }
 
   public RobotContainer() {

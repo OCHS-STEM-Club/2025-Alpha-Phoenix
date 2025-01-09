@@ -59,7 +59,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         }
         m_orchestra.addInstrument(motor);
         m_orchestra.loadMusic("output.chrp");
-        m_orchestra.play();
+        
     }
     
     public CommandSwerveDrivetrain(SwerveDrivetrainConstants driveTrainConstants, SwerveModuleConstants... modules) {
@@ -145,6 +145,10 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
             });
         }
 
+    }
+
+    public void playMusic(){
+        m_orchestra.play();
     }
     
     
